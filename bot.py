@@ -5,12 +5,11 @@ import discord
 
 from lib import (get_7_day_forecast, get_short_forecast, safe_list_get,
                  safe_rest_of_list)
-from mapquest import MapSearch
+from mapsearch import MapSearch
 from weather import USGovWeatherSearch
 
 TOKEN = os.environ.get("DISCORDTOKEN")
-MAPQUEST_KEY = os.environ.get("MAPQUESTKEY")
-MAPQUEST_SECRET = os.environ.get("MAPQUESTSECRET")
+GOOGLECLOUD = os.environ.get("GOOGLECLOUD")
 
 logger = None
 
@@ -37,19 +36,19 @@ client = discord.Client()
 
 @client.event
 async def on_message(message):
-    mapquest = MapSearch(MAPQUEST_KEY, MAPQUEST_SECRET)
+    gmap = MapSearch(key=GOOGLECLOUD)
     if message.author.bot or message.author == client.user:
         return
     if message.content.startswith('!weather'):
-        logging.info(f"Request from {message.author.name}: {message}")
+        logging.info(f"Request from {message.author.name}: {message.content}")
         split_command = message.content.split(' ')
         second_command = safe_list_get(split_command, 1)
-        location = safe_rest_of_list(split_command, 2)
+        location = ' '.join(safe_rest_of_list(split_command, 2))
         if second_command is None or location is None:
             await message.channel.send(content="Incorrect command Syntax.")
-        lat, lng = mapquest.get_coordinates(location)
+        lat, lng = gmap.get_coordinates(location)
         weather = None
-        if mapquest.is_us:
+        if gmap.is_us:
             weather = USGovWeatherSearch()
         else:
             # weather = WeatherSearch()
