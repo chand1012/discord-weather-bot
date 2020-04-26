@@ -3,13 +3,13 @@ import os
 
 import discord
 
-from lib import json_extract, get_short_forecast
+from lib import get_short_forecast, get_7_day_forecast
 from mapquest import MapSearch
 from weather import USGovWeatherSearch
 
-TOKEN = json_extract('token')
-WEATHER_KEY = json_extract('key', 'keys.json')
-WEATHER_SECRET = json_extract('secret', 'keys.json')
+TOKEN = os.environ.get("DISCORDTOKEN")
+MAPQUEST_KEY = os.environ.get("MAPQUESTKEY")
+MAPQUEST_SECRET = os.environ.get("MAPQUESTSECRET")
 
 logger = None
 
@@ -36,7 +36,7 @@ client = discord.Client()
 
 @client.event
 async def on_message(message):
-    mapquest = MapSearch(WEATHER_KEY, WEATHER_SECRET)
+    mapquest = MapSearch(MAPQUEST_KEY, MAPQUEST_SECRET)
     weather = None
     if message.content.startswith('!weather'):
         split_command = message.content.split(' ')
@@ -52,8 +52,11 @@ async def on_message(message):
         weather.search(lat, lng)
         if 'now' in second_command:
             await message.channel.send(content=get_short_forecast(weather.forecasts))
+        elif 'week' in second_command:
+            for forecast in get_7_day_forecast(weather.forecasts):
+                await message.channel.send(content=forecast)
         else:
-            await message.channel.send(content='Feature not yet supported.')
+            await message.channel.send(content='Incorrect command syntax.')
     return
 
 @client.event
