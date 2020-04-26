@@ -16,6 +16,7 @@ class MapSearch():
         self.key = data['key']
         self.secret = data['secret']
 
+    # returns all of the data from the location
     def search_address(self, location="Akron, Ohio"):
         if self.key is '' or self.secret is '':
             raise AssertionError("There was no API keys specified.")
@@ -31,8 +32,15 @@ class MapSearch():
         self.json = req.json()
         return self.json
 
+    # returns the coordinates
+    def get_coordinates(self, location="Kansas City, MO"):
+        self.search_address(location=location)
+        lat = self.json['results'][0]['locations'][0]['latLng']['lat']
+        lng = self.json['results'][0]['locations'][0]['latLng']['lng']
+        return (lat, lng)
+
 if __name__=='__main__':
     mapquest = MapSearch()
     mapquest.import_keys_from_json()
     print(mapquest.search_address())
-        
+    print(mapquest.get_coordinates())
