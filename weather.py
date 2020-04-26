@@ -1,4 +1,5 @@
 import requests
+import time
 import json
 
 class USGovWeatherSearch():
@@ -38,6 +39,7 @@ class WeatherSearch():
         self.key = key
         self.lat = 50
         self.lng = -86
+        self.kind = ''
         self.base_url = "http://api.openweathermap.org/"
         self.json = None
         self.formated_json = None
