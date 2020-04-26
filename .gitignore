@@ -133,3 +133,4 @@ keys.json
 discord.json
 
 *.log
+*.service
