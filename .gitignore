@@ -130,3 +130,6 @@ dmypy.json
 .vscode
 
 keys.json
+discord.json
+
+*.log

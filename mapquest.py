@@ -8,6 +8,7 @@ class MapSearch():
         self.body = None # last json request sent
         self.url = '' # last used url
         self.json = None
+        self.is_us = False
 
     def import_keys_from_json(self, filename="keys.json"):
         data = {}
@@ -30,6 +31,7 @@ class MapSearch():
         self.url = f"http://open.mapquestapi.com/geocoding/v1/address?key={self.key}"
         req = requests.post(self.url, data=self.body)
         self.json = req.json()
+        self.is_us = (self.json['results'][0]['locations'][0]['adminArea1'] == 'US')
         return self.json
 
     # returns the coordinates
