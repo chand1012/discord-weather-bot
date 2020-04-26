@@ -1,11 +1,14 @@
+import os
+
+from lib import get_short_forecast
 from mapquest import MapSearch
-from weather import USGovWeatherSearch as WeatherSearch
+from weather import WeatherSearch
 
 mapquest = MapSearch()
-weather = WeatherSearch()
+weather = WeatherSearch(key=os.environ.get("WEATHERKEY"))
 
 mapquest.import_keys_from_json()
-lat, lng = mapquest.get_coordinates("Atwater, Ohio")
+lat, lng = mapquest.get_coordinates("Ontario, Canada")
+print(f"Ontario, Canada coordinates: {lat}, {lng}")
 
-weather.search(lat, lng)
-print(weather.forecasts)
+print(weather.raw_search(lat, lng))

@@ -3,7 +3,8 @@ import os
 
 import discord
 
-from lib import get_short_forecast, get_7_day_forecast
+from lib import (get_7_day_forecast, get_short_forecast, safe_list_get,
+                 safe_rest_of_list)
 from mapquest import MapSearch
 from weather import USGovWeatherSearch
 
@@ -37,12 +38,17 @@ client = discord.Client()
 @client.event
 async def on_message(message):
     mapquest = MapSearch(MAPQUEST_KEY, MAPQUEST_SECRET)
-    weather = None
+    if message.author.bot or message.author == client.user:
+        return
     if message.content.startswith('!weather'):
+        logging.info(f"Request from {message.author.name}: {message}")
         split_command = message.content.split(' ')
-        second_command = split_command[1]
-        location = split_command[2:]
+        second_command = safe_list_get(split_command, 1)
+        location = safe_rest_of_list(split_command, 2)
+        if second_command is None or location is None:
+            await message.channel.send(content="Incorrect command Syntax.")
         lat, lng = mapquest.get_coordinates(location)
+        weather = None
         if mapquest.is_us:
             weather = USGovWeatherSearch()
         else:

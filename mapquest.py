@@ -1,3 +1,7 @@
+# This is an open source project
+# Feel free to use this when necessary.
+# - chand1012
+
 import requests
 import json
 

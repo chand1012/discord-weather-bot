@@ -2,5 +2,5 @@
 A Discord Bot that gets weather
 
 - Using the [US Weather API](https://www.weather.gov/documentation/services-web-api) (from NOAA).
-    - Will use [WeatherStack](https://weatherstack.com/) for non US weather data.
+    - Will use [OpenWeatherMap](https://openweathermap.org/) for non US weather data.
 - and using [MapQuest](https://developer.mapquest.com/documentation/open/geocoding-api/address/post/) for Geo Data.
