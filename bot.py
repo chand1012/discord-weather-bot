@@ -6,10 +6,11 @@ import discord
 from lib import (get_7_day_forecast, get_short_forecast, safe_list_get,
                  safe_rest_of_list)
 from mapsearch import MapSearch
-from weather import USGovWeatherSearch
+from weather import USGovWeatherSearch, WeatherSearch
 
 TOKEN = os.environ.get("DISCORDTOKEN")
 GOOGLECLOUD = os.environ.get("GOOGLECLOUD")
+WEATHERKEY = os.environ.get("WEATHERKEY")
 
 logger = None
 
@@ -44,20 +45,22 @@ async def on_message(message):
         split_command = message.content.split(' ')
         second_command = safe_list_get(split_command, 1)
         location = ' '.join(safe_rest_of_list(split_command, 2))
+
         if second_command is None or location is None:
             await message.channel.send(content="Incorrect command Syntax.")
+            
         lat, lng = gmap.get_coordinates(location)
         weather = None
+
         if gmap.is_us:
             weather = USGovWeatherSearch()
         else:
-            # weather = WeatherSearch()
-            await message.channel.send(content="I am sorry, but we do not support weather forecasts outside the United States at this time. Please try again at a later date.")
-            return
+            weather = WeatherSearch(key=WEATHERKEY)
+            
         weather.search(lat, lng)
-        if 'now' in second_command:
+        if 'now' in second_command or 'current' in second_command:
             await message.channel.send(content=get_short_forecast(weather.forecasts))
-        elif 'week' in second_command:
+        elif 'forecast' in second_command:
             for forecast in get_7_day_forecast(weather.forecasts):
                 await message.channel.send(content=forecast)
         else:

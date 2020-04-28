@@ -1,5 +1,6 @@
 import requests
-import time
+from datetime import datetime, timedelta
+from lib import time_of_day, deg_to_dir
 import json
 
 class USGovWeatherSearch():
@@ -12,7 +13,7 @@ class USGovWeatherSearch():
         self.json = None
         self.url = self.base_url
         self.forecast_url = None
-        self.forcasts = None
+        self.forecasts = []
 
     def get_points(self):
         self.url = self.base_url + f"/points/{self.lat},{self.lng}"
@@ -42,7 +43,6 @@ class WeatherSearch():
         self.kind = ''
         self.base_url = "http://api.openweathermap.org/"
         self.json = None
-        self.formated_json = None
         self.url = self.base_url
         self.forecasts = None
 
@@ -61,10 +61,37 @@ class WeatherSearch():
         return req.json()
 
     def format_json(self):
-        pass
+        firstdate = None
+        self.forecasts = []
+        for item in self.json['list']:
+            data = {}
+            date = datetime.strptime(item['dt_txt'], '%Y-%m-%d %H:%M:%S')
+            if firstdate is None:
+                firstdate = date
+            else:
+                firstdate += timedelta(hours=12)
+            if date == firstdate:
+                aprox = time_of_day(date)
+                data['temperatureUnit'] = 'C'
+                data['temperature'] = round(item['main']['temp'])
+                wind = f'Winds {deg_to_dir(item["wind"]["deg"])} around {round(item["wind"]["speed"])} m/s'
+                if item["wind"].get("gust"):
+                    wind += f' with gusts of up to {item["wind"]["gust"]} m/s'
+                data['detailedForecast'] = f'{item["weather"][0]["description"].capitalize()} with a high temperature near {round(item["main"]["temp_max"])}C, low of {round(item["main"]["temp_min"])}C. {wind}'
+                data['name'] = item['dt_txt']
+                if aprox is "night":
+                    data['name'] = "Tonight"
+                if aprox is "morning":
+                    data['name'] = "This Morning"
+                if aprox is "afternoon":
+                    data['name'] = "This Afternoon"
+                if aprox is "evening":
+                    data['name'] = "This Evening"
+                self.forecasts += [data]
+
 
     def search(self, lat=None, lng=None, kind="forecast"):
         self.raw_search(lat, lng, kind)
         self.format_json()
-        return self.formated_json
+        return self.forecasts
 
