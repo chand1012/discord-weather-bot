@@ -58,8 +58,8 @@ class WeatherSearch():
         req = requests.get(self.url)
         self.json = req.json()
         
-        return req.json()
-
+        return self.json
+        
     def format_json(self):
         firstdate = None
         self.forecasts = []
