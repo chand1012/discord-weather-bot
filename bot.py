@@ -1,5 +1,7 @@
 import logging
 import os
+import time
+from datetime import datetime, timedelta, time
 
 import discord
 
@@ -14,6 +16,8 @@ TOKEN = os.environ.get("DISCORDTOKEN")
 GOOGLECLOUD = os.environ.get("GOOGLECLOUD")
 WEATHERKEY = os.environ.get("WEATHERKEY")
 
+reset = datetime.combine(datetime.now().date(), time(0, 0)) + timedelta(1)
+counter = 0
 logger = None
 
 def initialize_logger(output_dir):
@@ -48,6 +52,10 @@ async def on_message(message):
         second_command = safe_list_get(split_command, 1)
         location = ' '.join(safe_rest_of_list(split_command, 2))
 
+        if time.time() >= reset.timestamp():
+            reset = datetime.combine(datetime.now().date(), time(0, 0)) + timedelta(1)
+            counter = 0
+
         if not any(item in message.content for item in ['forecast', 'now', 'current']):
             await message.channel.send(content="Incorrect command Syntax.")
             return
@@ -62,7 +70,12 @@ async def on_message(message):
         if gmap.is_us:
             weather = USGovWeatherSearch()
         else:
-            weather = WeatherSearch(key=WEATHERKEY)
+            if counter<1000: # this will change if I ever get a paid openweathermap membership.
+                weather = WeatherSearch(key=WEATHERKEY)
+                counter += 1
+            else:
+                await message.channel.send(content="Sorry for the inconvience, but the global weather request limit has been reached. This will be reset tonight at midnight EST.")
+                return
             
         weather.search(lat, lng)
         if 'now' in second_command or 'current' in second_command:
@@ -82,7 +95,9 @@ async def on_message(message):
         state_codes = STATECODES.keys()
         covid = None
         test = None
-        if location.upper() in STATES or location.upper() in state_codes:
+        if location.upper() in STATES or location.upper() in state_codes or 'USA' in location.upper():
+            if 'USA' in location.upper():
+                location = ''
             covid = CovidUSData()
             test = covid.get_data(state=location)
         elif 'global' in location.lower() or 'globe' in location.lower() or location is '' or location is None:
@@ -102,6 +117,16 @@ async def on_message(message):
         else:
             logging.info("Sending COVID-19 data....")
             await message.channel.send(content=msg)
+
+    if message.content.startswith('!weatherbot'):
+        logging.info(f"Request from {message.author.name}: {message.content}")
+        split_command = message.content.split(' ')
+        second_command = safe_list_get(split_command, 1)
+        if 'counter' in second_command:
+            timestring = reset.strftime("%m/%d/%Y, %H:%M:%S")
+            await message.channel.send(content=f"The counter is currently at {counter} and will reset at {timestring}.")
+        else:
+            await message.channel.send(content="Hello from WeatherBot!")
 
     logging.info('Done.')
     return
