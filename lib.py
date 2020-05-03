@@ -1,3 +1,67 @@
+STATECODES = {
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AS": "American Samoa",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "DC": "District Of Columbia",
+    "FM": "Federated States Of Micronesia",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "GU": "Guam",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MH": "Marshall Islands",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "MP": "Northern Mariana Islands",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PW": "Palau",
+    "PA": "Pennsylvania",
+    "PR": "Puerto Rico",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VI": "Virgin Islands",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming"
+}
+
+STATES = ['ALABAMA', 'ALASKA', 'AMERICAN SAMOA', 'ARIZONA', 'ARKANSAS', 'CALIFORNIA', 'COLORADO', 'CONNECTICUT', 'DELAWARE', 'DISTRICT OF COLUMBIA', 'FEDERATED STATES OF MICRONESIA', 'FLORIDA', 'GEORGIA', 'GUAM', 'HAWAII', 'IDAHO', 'ILLINOIS', 'INDIANA', 'IOWA', 'KANSAS', 'KENTUCKY', 'LOUISIANA', 'MAINE', 'MARSHALL ISLANDS', 'MARYLAND', 'MASSACHUSETTS', 'MICHIGAN', 'MINNESOTA', 'MISSISSIPPI', 'MISSOURI', 'MONTANA', 'NEBRASKA', 'NEVADA', 'NEW HAMPSHIRE', 'NEW JERSEY', 'NEW MEXICO', 'NEW YORK', 'NORTH CAROLINA', 'NORTH DAKOTA', 'NORTHERN MARIANA ISLANDS', 'OHIO', 'OKLAHOMA', 'OREGON', 'PALAU', 'PENNSYLVANIA', 'PUERTO RICO', 'RHODE ISLAND', 'SOUTH CAROLINA', 'SOUTH DAKOTA', 'TENNESSEE', 'TEXAS', 'UTAH', 'VERMONT', 'VIRGIN ISLANDS', 'VIRGINIA', 'WASHINGTON', 'WEST VIRGINIA', 'WISCONSIN', 'WYOMING']
+
 def get_short_forecast(forecast_list):
     forecast = forecast_list[0]
     return_string = forecast['name'] + '\n'
@@ -79,3 +143,49 @@ def find_item_by_attr(list_dict, attr, search):
     for item in list_dict:
         if item[attr] == search:
             return item
+    
+def generate_covid_message(covid_obj, location):
+    return_string = ''
+
+    if covid_obj.total is -1 or covid_obj.deaths is -1 or covid_obj.recovered is -1:
+        return return_string
+
+    if covid_obj.mode is 'us':
+        return_string += "COVID-19 Statistics for the United States:\n"
+    elif covid_obj.mode is 'state':
+        return_string += f"COVID-19 Statistics for the US State of {covid_obj.state}:\n"
+    elif covid_obj.mode is 'country':
+        return_string += f"COVID-19 Statistics for {covid_obj.country}:\n"
+    elif covid_obj.mode is 'global':
+        return_string += "Global COVID-19 Statistics:\n"
+    else:
+        return_string += f"COVID-19 Statistics for {location}:"
+    
+    if covid_obj.total is None or covid_obj.total is 0:
+        return_string += "There is no data for total confirmed cases in this area.\n"
+    else:
+        return_string += f"Total Confirmed Cases: {covid_obj.total:,}\n"
+
+    if covid_obj.deaths is None or covid_obj.deaths is 0:
+        return_string += "There is no data for total confirmed deaths in this area.\n"
+    else:
+        return_string += f"Total Confirmed Deaths: {covid_obj.deaths:,}\n"
+
+    if covid_obj.recovered is None or covid_obj.recovered is 0:
+        return_string += "There is no data for recovered cases in this area.\n"
+    else:
+        return_string += f"Total COVID-19 Recoveries: {covid_obj.recovered:,}\n"
+
+    return return_string
+
+def all_lower(list_of_strings):
+    final_list = []
+    for item in list_of_strings:
+        final_list += [item.lower()]
+    return final_list
+
+def all_upper(list_of_strings):
+    final_list = []
+    for item in list_of_strings:
+        final_list += [item.upper()]
+    return final_list
