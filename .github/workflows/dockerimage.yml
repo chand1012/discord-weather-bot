@@ -22,7 +22,7 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
         with:
-        # Artifact name
-        name: discord-weather-bot-docker
-        # A file, directory or wildcard pattern that describes what to upload
-        path: discord-weather-bot_latest.tar.gz
+          # Artifact name
+          name: discord-weather-bot-docker
+          # A file, directory or wildcard pattern that describes what to upload
+          path: discord-weather-bot_latest.tar.gz
