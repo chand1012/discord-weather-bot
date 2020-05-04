@@ -1,14 +1,13 @@
 import logging
 import os
-import time as etime
-from datetime import datetime, timedelta, time
+import time
 
 import discord
 
 from covid import CovidCountryData, CovidUSData
 from lib import (STATECODES, STATES, all_upper, generate_covid_message,
                  get_7_day_forecast, get_short_forecast, safe_list_get,
-                 safe_rest_of_list)
+                 safe_rest_of_list, set_time, get_time)
 from mapsearch import MapSearch
 from weather import USGovWeatherSearch, WeatherSearch
 
@@ -16,7 +15,7 @@ TOKEN = os.environ.get("DISCORDTOKEN")
 GOOGLECLOUD = os.environ.get("GOOGLECLOUD")
 WEATHERKEY = os.environ.get("WEATHERKEY")
 
-reset = datetime.combine(datetime.now().date(), time(0, 0)) + timedelta(1)
+set_time()
 counter = 0
 logger = None
 
@@ -52,8 +51,8 @@ async def on_message(message):
         second_command = safe_list_get(split_command, 1)
         location = ' '.join(safe_rest_of_list(split_command, 2))
 
-        if etime.time() >= reset.timestamp():
-            reset = datetime.combine(datetime.now().date(), time(0, 0)) + timedelta(1)
+        if time.time() >= get_time():
+            set_time()
             counter = 0
 
         if not any(item in message.content for item in ['forecast', 'now', 'current']):

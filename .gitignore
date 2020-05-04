@@ -134,3 +134,5 @@ discord.json
 
 *.log
 *.service
+
+time.txt

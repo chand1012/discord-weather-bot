@@ -1,3 +1,5 @@
+from datetime import datetime, time, timedelta
+
 STATECODES = {
     "AL": "Alabama",
     "AK": "Alaska",
@@ -189,3 +191,14 @@ def all_upper(list_of_strings):
     for item in list_of_strings:
         final_list += [item.upper()]
     return final_list
+
+def set_time(filename="time.txt"):
+    reset = datetime.combine(datetime.now().date(), time(0, 0)) + timedelta(1)
+    with open(filename, 'w') as f:
+        f.write(str(reset.timestamp()))
+
+def get_time(filename="time.txt"):
+    t = ""
+    with open(filename) as f:
+        t = f.read()
+    return float(t)
