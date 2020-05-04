@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        docker build . --file Dockerfile --tag discord-weather-bot:latest
+        docker save docker save discord-weather-bot:latest | gzip > discord-weather-bot_latest.tar.gz
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+        with:
+        # Artifact name
+        name: discord-weather-bot-docker
+        # A file, directory or wildcard pattern that describes what to upload
+        path: discord-weather-bot_latest.tar.gz
