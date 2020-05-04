@@ -14,7 +14,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: |
-        docker build . --file Dockerfile --tag discord-weather-bot:latest
-        docker save discord-weather-bot:latest | gzip > discord-weather-bot_latest.tar.gz
+    - name: Docker Build & Push to Docker Hub
+      uses: opspresso/action-docker@master
+      with:
+        args: --docker
+      env:
+        USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKERFILE: "Dockerfile"
+        IMAGE_NAME: "chand1012/discord-weather-bot"
+        LATEST: "true"
+        
