@@ -1,6 +1,6 @@
 import logging
 import os
-import time
+import time as etime
 from datetime import datetime, timedelta, time
 
 import discord
@@ -52,7 +52,7 @@ async def on_message(message):
         second_command = safe_list_get(split_command, 1)
         location = ' '.join(safe_rest_of_list(split_command, 2))
 
-        if time.time() >= reset.timestamp():
+        if etime.time() >= reset.timestamp():
             reset = datetime.combine(datetime.now().date(), time(0, 0)) + timedelta(1)
             counter = 0
 
