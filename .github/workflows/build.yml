@@ -1,0 +1,27 @@
+name: Build Docker Image
+on: [push]
+jobs:
+
+    build:
+        name: Build
+        runs-on: ubuntu-18.04
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v1
+
+            - name: Install Docker
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y docker.io
+            
+            - name: Build Image
+              run: |
+                sudo docker build --tag discord-weather-bot .
+                sudo docker save discord-weather-bot:latest | gzip > discord-weather-bot_latest.tar.gz
+
+            - name: Archive Image
+              uses: actions/upload-artifact@v1
+              with:
+                name: discord-weather-bot-docker
+                path: discord-weather-bot_latest.tar.gz
+            
