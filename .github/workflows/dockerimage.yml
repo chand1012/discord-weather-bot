@@ -18,9 +18,3 @@ jobs:
       run: |
         docker build . --file Dockerfile --tag discord-weather-bot:latest
         docker save discord-weather-bot:latest | gzip > discord-weather-bot_latest.tar.gz
-
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: discord-weather-bot-docker
-        path: discord-weather-bot_latest.tar.gz
