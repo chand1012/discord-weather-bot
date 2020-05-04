@@ -202,3 +202,18 @@ def get_time(filename="time.txt"):
     with open(filename) as f:
         t = f.read()
     return float(t)
+
+def get_counter(filename="counter.txt"):
+    t = ""
+    with open(filename) as f:
+        t = f.read()
+    return int(t)
+
+def increment_counter(filename="counter.txt"):
+    count = get_counter(filename=filename)+1
+    with open(filename, 'w') as f:
+        f.write(str(count))
+
+def set_counter(filename="counter.txt", count=0):
+    with open(filename, 'w') as f:
+        f.write(str(count))

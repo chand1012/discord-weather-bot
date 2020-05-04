@@ -1,13 +1,15 @@
 import logging
 import os
 import time
+from datetime import datetime
 
 import discord
 
 from covid import CovidCountryData, CovidUSData
 from lib import (STATECODES, STATES, all_upper, generate_covid_message,
-                 get_7_day_forecast, get_short_forecast, safe_list_get,
-                 safe_rest_of_list, set_time, get_time)
+                 get_7_day_forecast, get_counter, get_short_forecast, get_time,
+                 increment_counter, safe_list_get, safe_rest_of_list,
+                 set_counter, set_time)
 from mapsearch import MapSearch
 from weather import USGovWeatherSearch, WeatherSearch
 
@@ -16,7 +18,7 @@ GOOGLECLOUD = os.environ.get("GOOGLECLOUD")
 WEATHERKEY = os.environ.get("WEATHERKEY")
 
 set_time()
-counter = 0
+set_counter()
 logger = None
 
 def initialize_logger(output_dir):
@@ -46,6 +48,7 @@ async def on_message(message):
     if message.author.bot or message.author == client.user:
         return
     if message.content.startswith('!weather'):
+        counter = get_counter()
         logging.info(f"Request from {message.author.name}: {message.content}")
         split_command = message.content.split(' ')
         second_command = safe_list_get(split_command, 1)
@@ -53,7 +56,7 @@ async def on_message(message):
 
         if time.time() >= get_time():
             set_time()
-            counter = 0
+            set_counter()
 
         if not any(item in message.content for item in ['forecast', 'now', 'current']):
             await message.channel.send(content="Incorrect command Syntax.")
@@ -71,7 +74,7 @@ async def on_message(message):
         else:
             if counter<1000: # this will change if I ever get a paid openweathermap membership.
                 weather = WeatherSearch(key=WEATHERKEY)
-                counter += 1
+                increment_counter()
             else:
                 await message.channel.send(content="Sorry for the inconvience, but the global weather request limit has been reached. This will be reset tonight at midnight EST.")
                 return
@@ -122,7 +125,8 @@ async def on_message(message):
         split_command = message.content.split(' ')
         second_command = safe_list_get(split_command, 1)
         if 'counter' in second_command:
-            timestring = reset.strftime("%m/%d/%Y, %H:%M:%S")
+            counter = get_counter()
+            timestring = datetime.fromtimestamp(get_time()).strftime("%m/%d/%Y, %H:%M:%S")
             await message.channel.send(content=f"The counter is currently at {counter} and will reset at {timestring}.")
         else:
             await message.channel.send(content="Hello from WeatherBot!")
