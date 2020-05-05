@@ -22,6 +22,6 @@ jobs:
         USERNAME: ${{ secrets.DOCKER_USERNAME }}
         PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKERFILE: "Dockerfile"
-        IMAGE_NAME: "chand1012/discord-weather-bot"
+        IMAGE_NAME: "${{ secrets.DOCKER_USERNAME }}/discord-weather-bot"
         TAG_NAME: "${{ steps.extract_branch.outputs.branch }}"
         

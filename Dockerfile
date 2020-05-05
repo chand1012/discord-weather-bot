@@ -1,7 +1,7 @@
-FROM python:alpine3.6
+FROM python:alpine3.7
 COPY . /app
 WORKDIR /app
 RUN apk add --update build-base
 RUN pip install -U pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 CMD python ./bot.py
