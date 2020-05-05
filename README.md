@@ -8,7 +8,8 @@ A Discord Bot that gets the weather and COVID-19 country statistics.
 
 - For weather data, use the command `!weather`:
     - Use `!weather current <location>` to get the current weather forecast at that location.
-    - Use `!weather forecast <location>` to get the forecast for the next 5 to 7 days. <sup><sub>Non-US weather searches are subject to a global 1000 requests per day limit.</sub></sup>
+    - Use `!weather forecast <location>` to get the forecast for the next 5 to 7 days.
+    - Use `!weatherbot counter` to check what the global weather counter is at. If this exceeds 1000, the requests must be stopped until midnight the next day.
     - Examples:
         - `!weather current Akron, Ohio`
         - `!weather current London, England`

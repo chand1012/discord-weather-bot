@@ -44,12 +44,27 @@ client = discord.Client()
 
 @client.event
 async def on_message(message):
-    gmap = MapSearch(key=GOOGLECLOUD)
     if message.author.bot or message.author == client.user:
         return
-    if message.content.startswith('!weather'):
+
+    if message.content.startswith('!weatherbot'):
+        logging.info(f"Request: {message.content}")
+        split_command = message.content.split(' ')
+        second_command = safe_list_get(split_command, 1)
+        if 'counter' in second_command:
+            counter = get_counter()
+            timestring = datetime.fromtimestamp(get_time()).strftime("%m/%d/%Y, %H:%M:%S")
+            msg = f"The counter is currently at {counter} and will reset at {timestring}."
+            logging.info(msg)
+            await message.channel.send(content=msg)
+        else:
+            await message.channel.send(content="Hello from WeatherBot!")
+
+    elif message.content.startswith('!weather'):
+        gmap = MapSearch(key=GOOGLECLOUD)
         counter = get_counter()
-        logging.info(f"Request from {message.author.name}: {message.content}")
+        logging.info(f"Request: {message.content}")
+        logging.info("Parsing command...")
         split_command = message.content.split(' ')
         second_command = safe_list_get(split_command, 1)
         location = ' '.join(safe_rest_of_list(split_command, 2))
@@ -65,17 +80,21 @@ async def on_message(message):
         if second_command is None or location is None:
             await message.channel.send(content="Incorrect command Syntax.")
             return
-            
+        
+        logging.info("Getting coordinates of location...")
         lat, lng = gmap.get_coordinates(location)
         weather = None
 
         if gmap.is_us:
+            logging.info("Using NOAA Weather Data.")
             weather = USGovWeatherSearch()
         else:
             if counter<1000: # this will change if I ever get a paid openweathermap membership.
+                logging.info("Using OpenWeatherMap Data.")
                 weather = WeatherSearch(key=WEATHERKEY)
                 increment_counter()
             else:
+                logging.warning("Counter has reached 1000, cannot use OpenWeatherMap until tomorrow.")
                 await message.channel.send(content="Sorry for the inconvience, but the global weather request limit has been reached. This will be reset tonight at midnight EST.")
                 return
             
@@ -90,25 +109,29 @@ async def on_message(message):
         else:
             await message.channel.send(content='Incorrect command syntax.')
 
-    if message.content.startswith('!covid'):
-        logging.info(f"Request from {message.author.name}: {message.content}")
+    elif message.content.startswith('!covid'):
+        logging.info(f"Request: {message.content}")
         split_command = message.content.split(' ')
         location = ' '.join(safe_rest_of_list(split_command, 1))
         state_codes = STATECODES.keys()
         covid = None
         test = None
         if location.upper() in STATES or location.upper() in state_codes or 'USA' in location.upper():
+            logging.info("Getting COVID-19 data for the US.")
             if 'USA' in location.upper():
                 location = ''
             covid = CovidUSData()
             test = covid.get_data(state=location)
         elif 'global' in location.lower() or 'globe' in location.lower() or location is '' or location is None:
+            logging.info("Getting global COVID-19 data.")
             covid = CovidCountryData()
             test = covid.get_data()
         else:
+            logging.info(f"Getting COVID-19 data for {location}.")
             covid = CovidCountryData()
             test = covid.get_data(country=location)
         
+        logging.info("Generating message...")
         msg = generate_covid_message(covid, location)
 
         if msg is '':
@@ -119,17 +142,6 @@ async def on_message(message):
         else:
             logging.info("Sending COVID-19 data....")
             await message.channel.send(content=msg)
-
-    if message.content.startswith('!weatherbot'):
-        logging.info(f"Request from {message.author.name}: {message.content}")
-        split_command = message.content.split(' ')
-        second_command = safe_list_get(split_command, 1)
-        if 'counter' in second_command:
-            counter = get_counter()
-            timestring = datetime.fromtimestamp(get_time()).strftime("%m/%d/%Y, %H:%M:%S")
-            await message.channel.send(content=f"The counter is currently at {counter} and will reset at {timestring}.")
-        else:
-            await message.channel.send(content="Hello from WeatherBot!")
 
     logging.info('Done.')
     return
