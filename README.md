@@ -25,7 +25,7 @@ A Discord Bot that gets the weather and COVID-19 country statistics.
 
 ## Add to Server
 
-Coming soon.
+Click [here](https://discordapp.com/oauth2/authorize?client_id=703802587014627418&scope=bot&permissions=2048) to add the bot to your server.
 
 ## API Info For Geeks
 
