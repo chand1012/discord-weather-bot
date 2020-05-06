@@ -139,3 +139,5 @@ time.txt
 counter.txt
 
 test.py
+
+*.tar.gz

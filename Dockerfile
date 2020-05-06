@@ -1,4 +1,4 @@
-FROM python:alpine3.7
+FROM python:3.6.10-alpine
 COPY . /app
 WORKDIR /app
 RUN apk add --update build-base
