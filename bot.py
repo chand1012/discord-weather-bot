@@ -6,11 +6,12 @@ from datetime import datetime
 import discord
 
 from covid import CovidCountryData, CovidUSData
-from lib import (STATECODES, STATES, all_upper, generate_covid_message,
-                 get_7_day_forecast, get_counter, get_short_forecast, get_time,
-                 increment_counter, safe_list_get, safe_rest_of_list,
+from lib import (STATECODES, STATES, get_counter, get_time, increment_counter,
                  set_counter, set_time)
+from list_dict import find_item_by_attr, safe_list_get, safe_rest_of_list
 from mapsearch import MapSearch
+from strings import (deg_to_dir, generate_covid_message, get_7_day_forecast,
+                     get_short_forecast, time_of_day)
 from weather import USGovWeatherSearch, WeatherSearch
 
 TOKEN = os.environ.get("DISCORDTOKEN")
