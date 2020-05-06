@@ -27,10 +27,11 @@ A Discord Bot that gets the weather and COVID-19 country statistics.
 
 Click [here](https://discordapp.com/oauth2/authorize?client_id=703802587014627418&scope=bot&permissions=2048) to add the bot to your server.
 
-## API Info For Geeks
+## Info For Geeks
 
 - Uses the [US Weather API](https://www.weather.gov/documentation/services-web-api) (from NOAA).
 - Uses [OpenWeatherMap](https://openweathermap.org/) for non US weather data <sub>(there is a limit at the moment)</sub>.
 - Uses [Google Maps API](https://cloud.google.com/maps-platform/) for Geo Data.
 - Uses [COVIDTracking](https://covidtracking.com/) for US State data.
 - Uses [COVID19API](https://covid19api.com/) for all other COVID-related requests.
+- Uses a [Docker Container](https://hub.docker.com/r/chand1012/discord-weather-bot) to run on an unRAID server without a VM. 
