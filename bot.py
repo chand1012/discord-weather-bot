@@ -14,10 +14,12 @@ from strings import (deg_to_dir, generate_covid_message, get_7_day_forecast,
                      get_short_forecast, time_of_day)
 from weather import WeatherSearch
 from weather import WorkerWeatherSearch as USGovWeatherSearch
+from topgg import update_server_count
 
 TOKEN = os.environ.get("DISCORDTOKEN")
 GOOGLECLOUD = os.environ.get("GOOGLECLOUD")
 WEATHERKEY = os.environ.get("WEATHERKEY")
+TOPGG = os.environ.get("TOPGG")
 
 set_time()
 set_counter()
@@ -145,14 +147,18 @@ async def on_message(message):
             logging.info("Sending COVID-19 data....")
             await message.channel.send(content=msg)
 
+    if not TOPGG is None:
+        update_server_count(TOPGG, client.user.id, len(client.guilds))
     logging.info('Done.')
     return
 
 @client.event
 async def on_ready():
-	logging.info('Logged in as')
-	logging.info(client.user.name)
-	logging.info(client.user.id)
-	logging.info('------')
+    logging.info('Logged in as')
+    logging.info(client.user.name)
+    logging.info(client.user.id)
+    logging.info('------')
+    if not TOPGG is None:
+        update_server_count(TOPGG, client.user.id, len(client.guilds))
 
 client.run(TOKEN)
