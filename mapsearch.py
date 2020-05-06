@@ -6,7 +6,7 @@ import json
 
 from googlemaps import Client as GClient
 
-from lib import safe_list_get
+from list_dict import safe_list_get
 
 
 class MapSearch():
