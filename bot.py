@@ -12,7 +12,8 @@ from list_dict import find_item_by_attr, safe_list_get, safe_rest_of_list
 from mapsearch import MapSearch
 from strings import (deg_to_dir, generate_covid_message, get_7_day_forecast,
                      get_short_forecast, time_of_day)
-from weather import USGovWeatherSearch, WeatherSearch
+from weather import WeatherSearch
+from weather import WorkerWeatherSearch as USGovWeatherSearch
 
 TOKEN = os.environ.get("DISCORDTOKEN")
 GOOGLECLOUD = os.environ.get("GOOGLECLOUD")
