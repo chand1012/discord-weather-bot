@@ -3,6 +3,25 @@ from datetime import datetime, timedelta
 from strings import time_of_day, deg_to_dir
 import json
 
+class WorkerWeatherSearch():
+    # this uses my Cloudflare worker that reduces the
+    # number of requests I have to make on my slow internet
+    # it is just middleware for the US government search.
+    def __init__(self):
+        self.lat=41.08
+        self.lng = -81.51
+        self.base_url = "https://weather-api.chand1012.workers.dev"
+        self.json = None
+        self.forecasts = []
+
+    def search(self, lat, lng):
+        self.lat = lat
+        self.lng = lng
+        req = requests.post(self.base_url, headers={'content-type':'application/json'}, json={'lat':lat, 'lng':lng})
+        self.json = req.json()
+        self.forecasts = self.json['properties']['periods']
+        return self.json
+
 class USGovWeatherSearch():
     def __init__(self):
         self.lat = 41.08
