@@ -8,7 +8,7 @@ def update_server_count(key, botID, count):
         "Authorization": key,
         "Content-Type": "application/json"
     }
-    req = requests.post(url, data=data, headers=headers)
+    req = requests.post(url, json=data, headers=headers)
 
     if req.status_code != 200:
         raise requests.HTTPError(req.content)
