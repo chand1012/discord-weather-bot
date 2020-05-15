@@ -101,8 +101,14 @@ async def on_message(message):
                 logging.warning("Counter has reached 1000, cannot use OpenWeatherMap until tomorrow.")
                 await message.channel.send(content="Sorry for the inconvience, but the global weather request limit has been reached. This will be reset tonight at midnight EST.")
                 return
-            
-        weather.search(lat, lng)
+        try:
+            weather.search(lat, lng)
+        except Exception as e:
+            logging.error(e)
+            logging.error(f"Given location: {location}")
+            logging.error(f"Lat: {lat}, Lng: {lng}")
+            await message.channel.send(content="There was an error processing your request. If this persists, please report it here: https://github.com/chand1012/discord-weather-bot/issues")
+            return
         if 'now' in second_command or 'current' in second_command:
             logging.info("Sending current weather...")
             await message.channel.send(content=get_short_forecast(weather.forecasts))
