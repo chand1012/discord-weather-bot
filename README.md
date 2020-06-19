@@ -9,12 +9,16 @@ A Discord Bot that gets the weather and COVID-19 country statistics.
 - For weather data, use the command `!weather`:
     - Use `!weather current <location>` to get the current weather forecast at that location.
     - Use `!weather forecast <location>` to get the forecast for the next 5 to 7 days.
+    - Use `!weather <day> <location>` to get the weather on that upcoming day, where `<day>` is any weekday or weekend Sunday through Saturday.
     - Use `!weatherbot counter` to check what the global weather counter is at. If this exceeds 1000, the requests must be stopped until midnight the next day.
     - Examples:
         - `!weather current Akron, Ohio`
         - `!weather current London, England`
         - `!weather forecast Moscow, Russia`
         - `!weather forecast Rhode Island`
+        - `!weather Sunday Paris, France`
+        - `!weather Friday New Orleans`
+        
 - For COVID-19 data, use the command `!covid <country>`. If you wish to look up statistics for US States, you can use the State's two letter postal code, ie. `NY` for New York or `OH` for Ohio, to look up its respective data. If no country or state is selected, the command will display global statistics.
     - Examples:
         - `!covid Germany`

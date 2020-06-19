@@ -15,6 +15,20 @@ def get_7_day_forecast(forecast_list):
         return_list += [return_string]
     return return_list
 
+def get_day_forecast(forecast_list, day):
+    selected_forecasts = []
+    for forecast in forecast_list:
+        if day in forecast['name'].lower():
+            selected_forecasts += [forecast]
+    return_list = []
+    for forecast in selected_forecasts:
+        return_string = forecast['name'] + '\n'
+        return_string += f'Temperature: {forecast["temperature"]}{forecast["temperatureUnit"]}\n'
+        return_string += forecast['detailedForecast'] + '\n'
+        return_string += '-' * 20
+        return_list += [return_string]
+    return return_list
+
 def time_of_day(date):
     hours = list(range(24))
     if int(date.hour) in hours[20:] or int(date.hour) in hours[:4]:

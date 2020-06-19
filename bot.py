@@ -6,12 +6,12 @@ from datetime import datetime
 import discord
 
 from covid import CovidCountryData, CovidUSData
-from lib import (STATECODES, STATES, get_counter, get_time, increment_counter,
+from lib import (STATECODES, STATES, DAYS, get_counter, get_time, increment_counter,
                  set_counter, set_time)
 from list_dict import find_item_by_attr, safe_list_get, safe_rest_of_list
 from mapsearch import MapSearch
 from strings import (deg_to_dir, generate_covid_message, get_7_day_forecast,
-                     get_short_forecast, time_of_day)
+                     get_short_forecast, time_of_day, get_day_forecast)
 from weather import WeatherSearch #, USGovWeatherSearch
 from weather import WorkerWeatherSearch as USGovWeatherSearch
 from topgg import update_server_count
@@ -115,6 +115,10 @@ async def on_message(message):
         elif 'forecast' in second_command:
             logging.info("Sending forecast...")
             for forecast in get_7_day_forecast(weather.forecasts):
+                await message.channel.send(content=forecast)
+        elif any(day in second_command.lower() for day in DAYS):
+            logging.info(f"Sending forecast for {second_command.capitalize()}...")
+            for forecast in get_day_forecast(weather.forecasts, second_command):
                 await message.channel.send(content=forecast)
         else:
             await message.channel.send(content='Incorrect command syntax.')
