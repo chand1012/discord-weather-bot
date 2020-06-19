@@ -77,7 +77,7 @@ async def on_message(message):
             set_time()
             set_counter()
 
-        if not any(item in message.content for item in ['forecast', 'now', 'current']):
+        if not any(item in message.content.lower() for item in ['forecast', 'now', 'current']+DAYS):
             await message.channel.send(content="Incorrect command Syntax.")
             return
 
