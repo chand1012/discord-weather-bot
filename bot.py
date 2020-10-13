@@ -23,26 +23,16 @@ TOPGG = os.environ.get("TOPGG")
 
 set_time()
 set_counter()
-logger = None
 
-def initialize_logger(output_dir):
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
      
-    # create console handler and set level to info
-    handler = logging.StreamHandler()
-    handler.setLevel(logging.INFO)
-    formatter = logging.Formatter("%(levelname)s - %(message)s")
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
- 
-    # create error file handler and set level to error
-    handler = logging.FileHandler(os.path.join(output_dir, "error.log"),"w", encoding=None, delay="true")
-    handler.setLevel(logging.ERROR)
-    formatter = logging.Formatter("%(levelname)s - %(message)s")
-    handler.setFormatter(formatter)
-
-initialize_logger('.')
+# create console handler and set level to info
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter("%(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 client = discord.Client()
 
