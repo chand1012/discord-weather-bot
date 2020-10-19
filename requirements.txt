@@ -11,7 +11,7 @@ idna-ssl==1.1.0
 isort==5.6.3
 lazy-object-proxy==1.5.1
 mccabe==0.6.1
-multidict==4.7.6
+multidict==5.0.0
 pylint==2.6.0
 requests==2.24.0
 six==1.15.0
