@@ -13,14 +13,10 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
-    - name: Docker Build & Push to Docker Hub
-      uses: opspresso/action-docker@master
-      with:
-        args: --docker
-      env:
-        USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKERFILE: "Dockerfile"
-        IMAGE_NAME: "${{ secrets.DOCKER_USERNAME }}/discord-weather-bot"
-        TAG_NAME: "${{ steps.extract_branch.outputs.branch }}"
+    - name: Build Image
+      run: |
+       docker login ghcr.io -u chand1012 --password ${{ secrets.GHCR }}
+       docker build -t discord-weather-bot:${{ steps.extract_branch.outputs.branch }} .
+       docker tag discord-weather-bot:${{ steps.extract_branch.outputs.branch }} ghcr.io/chand1012/discord-weather-bot:${{ steps.extract_branch.outputs.branch }}
+       docker push ghcr.io/chand1012/discord-weather-bot:${{ steps.extract_branch.outputs.branch }}
         
