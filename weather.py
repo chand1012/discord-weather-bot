@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from strings import time_of_day, deg_to_dir
 
 
+
 class WorkerWeatherSearch():
     # this uses my Cloudflare worker that reduces the
     # number of requests I have to make on my slow internet
