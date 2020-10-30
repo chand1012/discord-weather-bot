@@ -5,6 +5,7 @@ def get_short_forecast(forecast_list):
     return_string += forecast['detailedForecast']
     return return_string
 
+
 def get_7_day_forecast(forecast_list):
     return_list = []
     for forecast in forecast_list:
@@ -14,6 +15,7 @@ def get_7_day_forecast(forecast_list):
         return_string += '-' * 20
         return_list += [return_string]
     return return_list
+
 
 def get_day_forecast(forecast_list, day):
     selected_forecasts = []
@@ -29,6 +31,7 @@ def get_day_forecast(forecast_list, day):
         return_list += [return_string]
     return return_list
 
+
 def time_of_day(date):
     hours = list(range(24))
     if int(date.hour) in hours[20:] or int(date.hour) in hours[:4]:
@@ -39,6 +42,7 @@ def time_of_day(date):
         return "afternoon"
     else:
         return "evening"
+
 
 def deg_to_dir(direction):
     # http://snowfence.umn.edu/Components/winddirectionanddegrees.htm
@@ -77,6 +81,7 @@ def deg_to_dir(direction):
     if 326.25 <= direction < 348.75:
         return "NNW"
 
+
 def generate_covid_message(covid_obj, location):
     return_string = ''
 
@@ -92,8 +97,8 @@ def generate_covid_message(covid_obj, location):
     elif covid_obj.mode == 'global':
         return_string += "Global COVID-19 Statistics:\n"
     else:
-        return_string += f"COVID-19 Statistics for {location}:"
-    
+        return_string += f"COVID-19 Statistics for {location}:
+
     if not covid_obj.total:
         return_string += "There is no data for total confirmed cases in this area.\n"
     else:
@@ -111,11 +116,13 @@ def generate_covid_message(covid_obj, location):
 
     return return_string
 
+
 def all_lower(list_of_strings):
     final_list = []
     for item in list_of_strings:
         final_list += [item.lower()]
     return final_list
+
 
 def all_upper(list_of_strings):
     final_list = []
