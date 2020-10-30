@@ -65,7 +65,6 @@ class CovidUSData():
             self.deaths = self.json[0]['death']
             self.recovered = self.json[0]['recovered']
         else:
-            stateData = {}
             self.mode = "state"
             self.state_code = state.upper()
             self.state = STATECODES.get(state.upper())

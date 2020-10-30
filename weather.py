@@ -75,7 +75,6 @@ class WeatherSearch():
         if lng:
             self.lng = lng
 
-        query = f"{self.lat},{self.lng}"
         self.url = f"{self.base_url}data/2.5/{kind}?lat={lat}&lon={lng}&units=metric&appid={self.key}"
 
         req = requests.get(self.url)
