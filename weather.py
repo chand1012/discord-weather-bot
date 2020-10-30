@@ -47,11 +47,7 @@ class USGovWeatherSearch():
         self.lng = lng
         self.get_points()
         req = requests.get(self.forecast_url)
-        try:
-            self.json = req.json()
-        except Exception as e:
-            print(e)
-            print(req.content)
+        self.json = req.json()
         self.forecasts = self.json['properties']['periods']
         return self.forecasts
 

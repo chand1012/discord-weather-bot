@@ -2,7 +2,7 @@ import logging
 import os
 import time
 from datetime import datetime
-
+import requests.exceptions
 import discord
 
 from covid import CovidCountryData, CovidUSData
@@ -93,7 +93,7 @@ async def on_message(message):
                 return
         try:
             weather.search(lat, lng)
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
             logging.error(e)
             logging.error(f"Given location: {location}")
             logging.error(f"Lat: {lat}, Lng: {lng}")
