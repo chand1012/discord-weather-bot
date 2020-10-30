@@ -1,6 +1,7 @@
 import requests
 from lib import STATECODES
 
+
 class CovidCountryData():
     def __init__(self):
         self.url = "https://api.covid19api.com/summary"
@@ -11,11 +12,12 @@ class CovidCountryData():
         self.recovered = -1
         self.json = {}
         self.mode = ""
-    
+
     def get_data(self, country=""):
         req = requests.get(self.url)
         if req.status_code != 200:
-            raise requests.HTTPError("Returned non-200 code. Please retry or check your syntax.")
+            raise requests.HTTPError(
+                "Returned non-200 code. Please retry or check your syntax.")
         self.json = req.json()
         if not country:
             globalData = self.json['Global']
@@ -36,6 +38,7 @@ class CovidCountryData():
 
         return self.total, self.deaths, self.recovered
 
+
 class CovidUSData():
     def __init__(self):
         self.mode = ""
@@ -46,17 +49,18 @@ class CovidUSData():
         self.json = None
         self.state = ""
         self.state_code = ""
-        
+
     def get_data(self, state=""):
         if not state:
             self.url = "https://covidtracking.com/api/v1/us/current.json"
         else:
             self.url = "https://covidtracking.com/api/v1/states/current.json"
-        
+
         req = requests.get(self.url)
         if req.status_code != 200:
-            raise requests.HTTPError("Returned non-200 code. Please retry or check your syntax.")
-            
+            raise requests.HTTPError(
+                "Returned non-200 code. Please retry or check your syntax.")
+
         self.json = req.json()
 
         if not state:
@@ -74,6 +78,5 @@ class CovidUSData():
                     self.deaths = item['death']
                     self.recovered = item['recovered']
                     break
-            
+
         return self.total, self.deaths, self.recovered
-    
