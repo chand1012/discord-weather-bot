@@ -8,10 +8,10 @@ import discord
 from covid import CovidCountryData, CovidUSData
 from lib import (STATECODES, STATES, DAYS, get_counter, get_time, increment_counter,
                  set_counter, set_time)
-from list_dict import find_item_by_attr, safe_list_get, safe_rest_of_list
+from list_dict import safe_list_get, safe_rest_of_list
 from mapsearch import MapSearch
-from strings import (deg_to_dir, generate_covid_message, get_7_day_forecast,
-                     get_short_forecast, time_of_day, get_day_forecast)
+from strings import (generate_covid_message, get_7_day_forecast,
+                     get_short_forecast, get_day_forecast)
 from weather import WeatherSearch #, USGovWeatherSearch
 from weather import WorkerWeatherSearch as USGovWeatherSearch
 from topgg import update_server_count

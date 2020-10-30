@@ -2,7 +2,6 @@
 # Feel free to use this when necessary.
 # - chand1012
 
-import json
 
 from googlemaps import Client as GClient
 
