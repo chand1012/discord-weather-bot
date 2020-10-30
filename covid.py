@@ -17,7 +17,7 @@ class CovidCountryData():
         if req.status_code != 200:
             raise requests.HTTPError("Returned non-200 code. Please retry or check your syntax.")
         self.json = req.json()
-        if country is "":
+        if not country:
             globalData = self.json['Global']
             self.total = globalData['TotalConfirmed']
             self.deaths = globalData['TotalDeaths']
@@ -48,7 +48,7 @@ class CovidUSData():
         self.state_code = ""
         
     def get_data(self, state=""):
-        if state is "":
+        if not state:
             self.url = "https://covidtracking.com/api/v1/us/current.json"
         else:
             self.url = "https://covidtracking.com/api/v1/states/current.json"
@@ -59,13 +59,12 @@ class CovidUSData():
             
         self.json = req.json()
 
-        if state is "":
+        if not state:
             self.mode = "us"
             self.total = self.json[0]['totalTestResults']
             self.deaths = self.json[0]['death']
             self.recovered = self.json[0]['recovered']
         else:
-            stateData = {}
             self.mode = "state"
             self.state_code = state.upper()
             self.state = STATECODES.get(state.upper())
