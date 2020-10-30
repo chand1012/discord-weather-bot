@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime, timedelta
 from strings import time_of_day, deg_to_dir
-import json
+
 
 
 class WorkerWeatherSearch():

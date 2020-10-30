@@ -1,7 +1,8 @@
 import requests
 
+
 def update_server_count(key, botID, count):
-    
+
     data = {"server_count": count}
     url = f"https://top.gg/api/bots/{botID}/stats"
     headers = {
@@ -12,5 +13,3 @@ def update_server_count(key, botID, count):
 
     if req.status_code != 200:
         raise requests.HTTPError(req.content)
-    
-    
