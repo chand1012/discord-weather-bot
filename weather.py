@@ -57,7 +57,7 @@ class USGovWeatherSearch():
 
 class WeatherSearch():
     def __init__(self, key=""):
-        if key is "":
+        if not key:
             raise AssertionError("No API key specified!")
 
         self.key = key
@@ -70,9 +70,9 @@ class WeatherSearch():
         self.forecasts = None
 
     def raw_search(self, lat=None, lng=None, kind="forecast"):
-        if not lat is None:
+        if lat:
             self.lat = lat
-        if not lng is None:
+        if lng:
             self.lng = lng
 
         query = f"{self.lat},{self.lng}"
@@ -102,13 +102,13 @@ class WeatherSearch():
                     wind += f' with gusts of up to {item["wind"]["gust"]} m/s'
                 data['detailedForecast'] = f'{item["weather"][0]["description"].capitalize()} with a high temperature near {round(item["main"]["temp_max"])}C, low of {round(item["main"]["temp_min"])}C. {wind}'
                 data['name'] = item['dt_txt']
-                if aprox is "night":
+                if aprox == "night":
                     data['name'] = "Tonight"
-                if aprox is "morning":
+                if aprox == "morning":
                     data['name'] = "This Morning"
-                if aprox is "afternoon":
+                if aprox == "afternoon":
                     data['name'] = "This Afternoon"
-                if aprox is "evening":
+                if aprox == "evening":
                     data['name'] = "This Evening"
                 self.forecasts += [data]
 
