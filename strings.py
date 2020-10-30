@@ -36,12 +36,12 @@ def time_of_day(date):
     hours = list(range(24))
     if int(date.hour) in hours[20:] or int(date.hour) in hours[:4]:
         return "night"
-    elif int(date.hour) in hours[5:12]:
+    if int(date.hour) in hours[5:12]:
         return "morning"
-    elif int(date.hour) in hours[13:17]:
+    if int(date.hour) in hours[13:17]:
         return "afternoon"
-    else:
-        return "evening"
+    return "evening"
+
 
 
 def deg_to_dir(direction):
