@@ -1,6 +1,6 @@
 # DiscordWeatherBot
 
-![Docker Image](https://github.com/chand1012/discord-weather-bot/workflows/Docker%20Image%20CI/badge.svg?branch=master) ![Code](https://img.shields.io/github/languages/top/chand1012/discord-weather-bot) ![Commit](https://img.shields.io/github/last-commit/chand1012/discord-weather-bot/master) [![Discord Bots](https://top.gg/api/widget/status/703802587014627418.svg)](https://top.gg/bot/703802587014627418) [![Discord Bots](https://top.gg/api/widget/lib/703802587014627418.svg)](https://top.gg/bot/703802587014627418)
+![Docker Image](https://github.com/chand1012/discord-weather-bot/workflows/Docker%20Image%20CI/badge.svg?branch=master) ![Code](https://img.shields.io/github/languages/top/chand1012/discord-weather-bot) ![Commit](https://img.shields.io/github/last-commit/chand1012/discord-weather-bot/master) [![Discord Bots](https://top.gg/api/widget/status/703802587014627418.svg)](https://top.gg/bot/703802587014627418) [![Discord Bots](https://top.gg/api/widget/lib/703802587014627418.svg)](https://top.gg/bot/703802587014627418) [![DeepSource](https://deepsource.io/gh/chand1012/discord-weather-bot.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/chand1012/discord-weather-bot/?ref=repository-badge)
 
 A Discord Bot that gets the weather and COVID-19 country statistics. 
 
