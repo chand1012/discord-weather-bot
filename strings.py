@@ -85,31 +85,31 @@ def deg_to_dir(direction):
 def generate_covid_message(covid_obj, location):
     return_string = ''
 
-    if covid_obj.total is -1 or covid_obj.deaths is -1 or covid_obj.recovered is -1:
+    if covid_obj.total == -1 or covid_obj.deaths == -1 or covid_obj.recovered == -1:
         return return_string
 
-    if covid_obj.mode is 'us':
+    if covid_obj.mode == 'us':
         return_string += "COVID-19 Statistics for the United States:\n"
-    elif covid_obj.mode is 'state':
+    elif covid_obj.mode == 'state':
         return_string += f"COVID-19 Statistics for the US State of {covid_obj.state}:\n"
-    elif covid_obj.mode is 'country':
+    elif covid_obj.mode == 'country':
         return_string += f"COVID-19 Statistics for {covid_obj.country}:\n"
-    elif covid_obj.mode is 'global':
+    elif covid_obj.mode == 'global':
         return_string += "Global COVID-19 Statistics:\n"
     else:
-        return_string += f"COVID-19 Statistics for {location}:"
-
-    if covid_obj.total is None or covid_obj.total is 0:
+        return_string += f"COVID-19 Statistics for {location}:
+    
+    if not covid_obj.total:
         return_string += "There is no data for total confirmed cases in this area.\n"
     else:
         return_string += f"Total Confirmed Cases: {covid_obj.total:,}\n"
 
-    if covid_obj.deaths is None or covid_obj.deaths is 0:
+    if not covid_obj.deaths:
         return_string += "There is no data for total confirmed deaths in this area.\n"
     else:
         return_string += f"Total Confirmed Deaths: {covid_obj.deaths:,}\n"
 
-    if covid_obj.recovered is None or covid_obj.recovered is 0:
+    if not covid_obj.recovered:
         return_string += "There is no data for recovered cases in this area.\n"
     else:
         return_string += f"Total COVID-19 Recoveries: {covid_obj.recovered:,}\n"
