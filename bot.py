@@ -12,7 +12,7 @@ from list_dict import safe_list_get, safe_rest_of_list
 from mapsearch import MapSearch
 from strings import (generate_covid_message, get_7_day_forecast,
                      get_short_forecast, get_day_forecast)
-from weather import WeatherSearch #, USGovWeatherSearch
+from weather import WeatherSearch  # , USGovWeatherSearch
 from weather import WorkerWeatherSearch as USGovWeatherSearch
 from topgg import update_server_count
 
@@ -26,7 +26,7 @@ set_counter()
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
-     
+
 # create console handler and set level to info
 handler = logging.StreamHandler()
 handler.setLevel(logging.INFO)
@@ -35,6 +35,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 client = discord.Client()
+
 
 @client.event
 async def on_message(message):
@@ -47,7 +48,8 @@ async def on_message(message):
         second_command = safe_list_get(split_command, 1)
         if 'counter' in second_command:
             counter = get_counter()
-            timestring = datetime.fromtimestamp(get_time()).strftime("%m/%d/%Y, %H:%M:%S")
+            timestring = datetime.fromtimestamp(
+                get_time()).strftime("%m/%d/%Y, %H:%M:%S")
             msg = f"The counter is currently at {counter} and will reset at {timestring}."
             logging.info(msg)
             await message.channel.send(content=msg)
@@ -74,7 +76,7 @@ async def on_message(message):
         if second_command is None or location is None:
             await message.channel.send(content="Incorrect command Syntax.")
             return
-        
+
         logging.info("Getting coordinates of location...")
         lat, lng = gmap.get_coordinates(location)
         weather = None
@@ -83,12 +85,13 @@ async def on_message(message):
             logging.info("Using NOAA Weather Data.")
             weather = USGovWeatherSearch()
         else:
-            if counter<1000: # this will change if I ever get a paid openweathermap membership.
+            if counter < 1000:  # this will change if I ever get a paid openweathermap membership.
                 logging.info("Using OpenWeatherMap Data.")
                 weather = WeatherSearch(key=WEATHERKEY)
                 increment_counter()
             else:
-                logging.warning("Counter has reached 1000, cannot use OpenWeatherMap until tomorrow.")
+                logging.warning(
+                    "Counter has reached 1000, cannot use OpenWeatherMap until tomorrow.")
                 await message.channel.send(content="Sorry for the inconvenience, but the global weather request limit has been reached. This will be reset tonight at midnight EST.")
                 return
         try:
@@ -107,7 +110,8 @@ async def on_message(message):
             for forecast in get_7_day_forecast(weather.forecasts):
                 await message.channel.send(content=forecast)
         elif any(day in second_command.lower() for day in DAYS):
-            logging.info(f"Sending forecast for {second_command.capitalize()}...")
+            logging.info(
+                f"Sending forecast for {second_command.capitalize()}...")
             for forecast in get_day_forecast(weather.forecasts, second_command):
                 await message.channel.send(content=forecast)
         else:
@@ -134,7 +138,7 @@ async def on_message(message):
             logging.info(f"Getting COVID-19 data for {location}.")
             covid = CovidCountryData()
             test = covid.get_data(country=location)
-        
+
         logging.info("Generating message...")
         msg = generate_covid_message(covid, location)
 
@@ -151,6 +155,7 @@ async def on_message(message):
         update_server_count(TOPGG, client.user.id, len(client.guilds))
     logging.info('Done.')
     return
+
 
 @client.event
 async def on_ready():
