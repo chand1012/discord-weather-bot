@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from strings import time_of_day, deg_to_dir
 
 
+
 class WorkerWeatherSearch():
     # this uses my Cloudflare worker that reduces the
     # number of requests I have to make on my slow internet
@@ -49,18 +50,14 @@ class USGovWeatherSearch():
         self.lng = lng
         self.get_points()
         req = requests.get(self.forecast_url)
-        try:
-            self.json = req.json()
-        except Exception as e:
-            print(e)
-            print(req.content)
+        self.json = req.json()
         self.forecasts = self.json['properties']['periods']
         return self.forecasts
 
 
 class WeatherSearch():
     def __init__(self, key=""):
-        if key is "":
+        if not key:
             raise AssertionError("No API key specified!")
 
         self.key = key
@@ -73,12 +70,11 @@ class WeatherSearch():
         self.forecasts = None
 
     def raw_search(self, lat=None, lng=None, kind="forecast"):
-        if not lat is None:
+        if lat:
             self.lat = lat
-        if not lng is None:
+        if lng:
             self.lng = lng
 
-        query = f"{self.lat},{self.lng}"
         self.url = f"{self.base_url}data/2.5/{kind}?lat={lat}&lon={lng}&units=metric&appid={self.key}"
 
         req = requests.get(self.url)
@@ -105,13 +101,13 @@ class WeatherSearch():
                     wind += f' with gusts of up to {item["wind"]["gust"]} m/s'
                 data['detailedForecast'] = f'{item["weather"][0]["description"].capitalize()} with a high temperature near {round(item["main"]["temp_max"])}C, low of {round(item["main"]["temp_min"])}C. {wind}'
                 data['name'] = item['dt_txt']
-                if aprox is "night":
+                if aprox == "night":
                     data['name'] = "Tonight"
-                if aprox is "morning":
+                if aprox == "morning":
                     data['name'] = "This Morning"
-                if aprox is "afternoon":
+                if aprox == "afternoon":
                     data['name'] = "This Afternoon"
-                if aprox is "evening":
+                if aprox == "evening":
                     data['name'] = "This Evening"
                 self.forecasts += [data]
 

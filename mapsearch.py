@@ -16,7 +16,7 @@ class MapSearch():
         self.country = ''
         self.is_us = False
         self.json = None
-        if self.key is '':
+        if not self.key:
             raise AssertionError("There was no API keys specified.")
         self.client = GClient(key=self.key)
 

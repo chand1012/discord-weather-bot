@@ -2,7 +2,7 @@ import logging
 import os
 import time
 from datetime import datetime
-
+import requests.exceptions
 import discord
 
 from covid import CovidCountryData, CovidUSData
@@ -96,7 +96,7 @@ async def on_message(message):
                 return
         try:
             weather.search(lat, lng)
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
             logging.error(e)
             logging.error(f"Given location: {location}")
             logging.error(f"Lat: {lat}, Lng: {lng}")
@@ -130,7 +130,7 @@ async def on_message(message):
                 location = ''
             covid = CovidUSData()
             test = covid.get_data(state=location)
-        elif 'global' in location.lower() or 'globe' in location.lower() or location is '' or location is None:
+        elif 'global' in location.lower() or 'globe' in location.lower() or not location:
             logging.info("Getting global COVID-19 data.")
             covid = CovidCountryData()
             test = covid.get_data()
@@ -142,7 +142,7 @@ async def on_message(message):
         logging.info("Generating message...")
         msg = generate_covid_message(covid, location)
 
-        if msg is '':
+        if not msg:
             logging.error("There was an error. Here is some debug info:")
             logging.error(location.upper())
             logging.error(test)
