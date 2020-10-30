@@ -98,7 +98,7 @@ def generate_covid_message(covid_obj, location):
         return_string += "Global COVID-19 Statistics:\n"
     else:
         return_string += f"COVID-19 Statistics for {location}:
-    
+
     if not covid_obj.total:
         return_string += "There is no data for total confirmed cases in this area.\n"
     else:
