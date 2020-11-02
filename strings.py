@@ -43,7 +43,6 @@ def time_of_day(date):
     return "evening"
 
 
-
 def deg_to_dir(direction):
     # http://snowfence.umn.edu/Components/winddirectionanddegrees.htm
 
