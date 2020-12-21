@@ -14,7 +14,7 @@ lazy-object-proxy==1.5.1
 mccabe==0.6.1
 multidict==5.0.2
 pylint==2.6.0
-requests==2.25.0
+requests==2.25.1
 six==1.15.0
 toml==0.10.2
 typed-ast==1.4.1
