@@ -1,0 +1,32 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "10:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - chand1012
+  assignees:
+  - chand1012
+  ignore:
+  - dependency-name: astroid
+    versions:
+    - "2.5"
+    - 2.5.1
+    - 2.5.2
+    - 2.5.3
+  - dependency-name: discord-py
+    versions:
+    - 1.6.0
+    - 1.7.0
+  - dependency-name: typed-ast
+    versions:
+    - 1.4.2
+  - dependency-name: isort
+    versions:
+    - 5.7.0
+  - dependency-name: lazy-object-proxy
+    versions:
+    - 1.5.2
